@@ -23,7 +23,7 @@ class ProductsView(CustomToplevel,Validations):
         add_button=CTkButton(mini_container, text="Registrar", width=150, height=50, command=self.add_product_form)
         add_button.pack(pady=10)
 
-        edit_button=CTkButton(mini_container, text="Editar", width=150, height=50)
+        edit_button=CTkButton(mini_container, text="Editar", width=150, height=50, command=self.edit_product_form)
         edit_button.pack()
 
         delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50)
@@ -85,13 +85,53 @@ class ProductsView(CustomToplevel,Validations):
             pass
 
     def edit_product_form(self):
-        pass
+        self.code=self.grid.item(self.grid.selection())["values"][1]
+        if self.code=="":
+            #Messagebox.show_warning("Elija un registro, por favor","Alerta")
+            return
+        data_update=self.__ProductsController.read_product(self.code)
+        self.products_form("Actualizar", self.edit_product)
+        self.id=data_update[0][0]
+        self.name_entry.insert(0, data_update[0][1])
+        self.code_entry.insert(0, data_update[0][2])
+        self.p_p_entry.insert(0, data_update[0][3])
+        self.s_p_entry.insert(0, data_update[0][4])
+        self.amount_entry.insert(0, data_update[0][5])
 
     def edit_product(self):
-        pass
+        id=self.id
+        name=self.name_entry.get()
+        code=self.code_entry.get()
+        p_p=self.p_p_entry.get()
+        s_p=self.s_p_entry.get()
+        amount=self.amount_entry.get()
+
+        if self.validate_entrys(name,code,p_p,s_p,amount,id):
+            status=self.__ProductsController.update_product(id,name,code,p_p,s_p,amount)
+            if status=="Success":
+                print("Actualizado")
+                self.form.destroy()
+                self.get_products()
+            else:
+                pass
+        else:
+            pass
 
     def delete_product(self):
-        pass
+        id=self.grid.item(self.grid.selection())["text"]
+        if id=="":
+            #Messagebox.show_warning("Elija un registro, por favor","Alerta")
+            return
+        if Messagebox.okcancel("Desea eliminar", "Alerta")=="OK":
+            status=self.__ProductsController.delete_product(id)
+            if status=="Success":
+                Messagebox.ok("Eliminado Correctamente","Alerta")
+                self.get_products()
+            else:
+                Messagebox.show_error(status,"Alerta")
+                return
+        else:
+            return
 
     def products_form(self, title:str, function):
         self.form=CustomToplevel(self.app)
