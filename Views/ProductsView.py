@@ -1,10 +1,12 @@
 from customtkinter import *
 from tkinter import ttk
 from Controllers.ProductsController import ProductsController
+from Resources.CustomWindow import CustomToplevel
+from Resources.Validations import Validations
 cp = '#0D55B4'
 cs= '#91C1FF'
 
-class ProductsView():
+class ProductsView(CustomToplevel,Validations):
 
     def __init__(self, app):
         self.app=app
@@ -62,10 +64,25 @@ class ProductsView():
             self.grid.insert('', i, text=product[0], values=(product[1],product[2],product[3],product[4],product[5]))
 
     def add_product_form(self):
-        self.form("Añadir", self.add_product)
+        self.products_form("Añadir", self.add_product)
 
     def add_product(self):
-        pass
+        name=self.name_entry.get()
+        code=self.code_entry.get()
+        p_p=self.p_p_entry.get()
+        s_p=self.s_p_entry.get()
+        amount=self.amount_entry.get()
+
+        if self.validate_entrys(name,code,p_p,s_p,amount):
+            status=self.__ProductsController.create_product(name,code,p_p,s_p,amount)
+            if status=="Success":
+                print("Insertado")
+                self.form.destroy()
+                self.get_products()
+            else:
+                pass
+        else:
+            pass
 
     def edit_product_form(self):
         pass
@@ -76,6 +93,32 @@ class ProductsView():
     def delete_product(self):
         pass
 
-    def form(self, title:str, function):
-        pass
+    def products_form(self, title:str, function):
+        self.form=CustomToplevel(self.app)
+        self.form.geometry("274x350")
+
+        title=CTkLabel(self.form, text=f"{title} Producto", bg_color=cp, width=274, height=35, font=("", 20))
+        title.pack()
+
+        validate_alphanumerics=self.form.register(self.validate_len_and_alphanumerics)
+        validate_numerics=self.form.register(self.validate_len_and_numerics)
+
+        self.name_entry=CTkEntry(self.form, placeholder_text='Nombre', width=140, height=40, validate="key", validatecommand=(validate_alphanumerics, '%P', 100), justify=CENTER)
+        self.name_entry.pack(pady=8)
+        self.name_entry.focus()
+
+        self.code_entry=CTkEntry(self.form, placeholder_text='Codigo', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 30), justify=CENTER)
+        self.code_entry.pack(pady=8)
+
+        self.p_p_entry=CTkEntry(self.form, placeholder_text='Precio de Compra', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
+        self.p_p_entry.pack()
+
+        self.s_p_entry=CTkEntry(self.form, placeholder_text='Precio de Venta', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
+        self.s_p_entry.pack(pady=8)
+
+        self.amount_entry=CTkEntry(self.form, placeholder_text='Existencia', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
+        self.amount_entry.pack()
+
+        submit=CTkButton(self.form, text='Enviar', width=140, height=40, command=function)
+        submit.pack(pady=10)
 

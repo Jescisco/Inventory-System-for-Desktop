@@ -15,7 +15,7 @@ class ProductsModel(GeneralModel):
 
     def create_product(self, name:str, code:str, purchase_price:int, sale_price:int, existence:str):
         if self.read_product(code)==[]:
-            resp=self.run_set_query(Q.get('create_product'),(name,code,purchase_price,sale_price,existence))
+            resp=self.run_set_query(Q.get('create_product'),(name.upper(),code,purchase_price,sale_price,existence))
             if type(resp)==int:
                 status="Success" if (resp>0) else "No se registró"
             else:
@@ -32,7 +32,7 @@ class ProductsModel(GeneralModel):
 
     def update_product(self, id:int, name:str, code:str, purchase_price:int, sale_price:int, existence:str):
         if self.run_get_query(Q.get('read_update_product'),(id,code))==[]:
-            resp=self.run_set_query(Q.get('update_product'),(name,code,purchase_price,sale_price,existence,id))
+            resp=self.run_set_query(Q.get('update_product'),(name.upper(),code,purchase_price,sale_price,existence,id))
             if type(resp)==int:
                 status="Success" if (resp>0) else "No se actualizó"
             else:

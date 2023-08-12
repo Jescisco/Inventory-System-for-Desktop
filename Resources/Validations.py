@@ -8,7 +8,7 @@ class Validations():
         return status
 
     def validate_len(self, entry, limit):
-        if len(entry)<int(limit):
+        if len(entry)<=int(limit):
             return True
         elif entry=="":
             return True
@@ -16,7 +16,7 @@ class Validations():
             return False
 
     def validate_len_and_alphanumerics(self, entry, limit):
-        if all(char.isalnum() or char.isspace() for char in entry) and len(entry)<int(limit):
+        if all(char.isalnum() or char.isspace() for char in entry) and len(entry)<=int(limit):
             return True
         elif entry=="":
             return True
@@ -24,7 +24,7 @@ class Validations():
             return False
 
     def validate_len_and_numerics(self, entry, limit):
-        if entry.isdigit() and len(entry)<int(limit):
+        if entry.isdigit() and len(entry)<=int(limit):
             return True
         elif entry=="":
             return True
@@ -32,7 +32,7 @@ class Validations():
             return False
 
     def validate_len_and_alpha(self, entry, limit):
-        if all(char.isalpha() or char.isspace() for char in entry) and len(entry)<int(limit):
+        if all(char.isalpha() or char.isspace() for char in entry) and len(entry)<=int(limit):
             return True
         elif entry=="":
             return True
