@@ -18,7 +18,7 @@ class ProductsView(CustomToplevel,Validations):
         title.pack()
 
         mini_container=CTkFrame(self.app, width=20, height=50)
-        mini_container.pack(side=LEFT, padx=20)
+        mini_container.pack(side=LEFT, padx=30)
 
         add_button=CTkButton(mini_container, text="Registrar", width=150, height=50, command=self.add_product_form)
         add_button.pack(pady=10)
@@ -29,13 +29,19 @@ class ProductsView(CustomToplevel,Validations):
         delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50, command=self.delete_product)
         delete_button.pack(pady=10)
 
+        addQuantity_button=CTkButton(mini_container, text="Añadir Existencia", width=150, height=50, command=self.delete_product)
+        addQuantity_button.pack()
+
+        search_Entry=CTkEntry(mini_container, width=150, height=30)
+        search_Entry.pack(pady=10)
+
         style=ttk.Style()
         style.theme_use("clam")
         style.configure("Treeview.Heading", foreground="white",background=cs, relief="flat")
         style.map("Treeview.Heading", background=[('active',cs)])
 
         self.grid = ttk.Treeview(self.app, columns=("#1","#2","#3","#4","#5"), show="headings")
-        self.grid.place(x=275, y=120, width=600, height=380)
+        self.grid.place(x=255, y=80, width=700, height=450)
 
         self.grid.column("#0", width=0, anchor=CENTER)
         self.grid.column("#1",width=30, anchor=CENTER)
