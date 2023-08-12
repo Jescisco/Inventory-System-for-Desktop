@@ -13,7 +13,7 @@ class ProductsView(CustomToplevel,Validations):
         self.__ProductsController=ProductsController()
         self.app.geometry("975x550")
 
-    def products(self):
+    def products(self, main):
         title=CTkLabel(self.app, text="Productos", bg_color=cp, width=974, height=55, font=("", 40))
         title.pack()
 
@@ -29,11 +29,17 @@ class ProductsView(CustomToplevel,Validations):
         delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50, command=self.delete_product)
         delete_button.pack(pady=10)
 
-        addQuantity_button=CTkButton(mini_container, text="Añadir Existencia", width=150, height=50, command=self.delete_product)
-        addQuantity_button.pack()
+        add_quantity_button=CTkButton(mini_container, text="Añadir Existencia", width=150, height=50, command=self.add_existence_form)
+        add_quantity_button.pack(pady=10)
 
-        search_Entry=CTkEntry(mini_container, width=150, height=30)
-        search_Entry.pack(pady=10)
+        self.search_entry=CTkEntry(mini_container, width=150, height=30)
+        self.search_entry.pack(pady=10)
+
+        search_button=CTkButton(mini_container, text="Buscar", width=150, height=50, command=self.search_product)
+        search_button.pack(pady=10)
+
+        return_button=CTkButton(mini_container, text="Volver", width=150, height=50, command=main)
+        return_button.pack(pady=10)
 
         style=ttk.Style()
         style.theme_use("clam")
@@ -91,11 +97,12 @@ class ProductsView(CustomToplevel,Validations):
             messagebox.showerror(title="Alerta", message="Campos vacíos")
 
     def edit_product_form(self):
-        self.code=self.grid.item(self.grid.selection())["values"][1]
-        if self.code=="":
+        try:
+            code=self.grid.item(self.grid.selection())["values"][1]
+        except IndexError:
             messagebox.showinfo(title="Alerta", message="Elija un registro, por favor")
             return
-        data_update=self.__ProductsController.read_product(self.code)
+        data_update=self.__ProductsController.read_product(code)
         self.products_form("Actualizar", self.edit_product)
         self.id=data_update[0][0]
         self.name_entry.insert(0, data_update[0][1])
@@ -138,6 +145,13 @@ class ProductsView(CustomToplevel,Validations):
         else:
             return
 
+    def search_product(self):
+        if self.validate_entrys(self.search_entry.get())!="":
+            data=self.__ProductsController.read_product(self.search_entry.get())
+            self.get_products(data)
+        else:
+            self.get_products()
+
     def products_form(self, title:str, function):
         self.form=CustomToplevel(self.app)
         self.form.geometry("274x350")
@@ -167,3 +181,22 @@ class ProductsView(CustomToplevel,Validations):
         submit=CTkButton(self.form, text='Enviar', width=140, height=40, command=function)
         submit.pack(pady=10)
 
+    def add_existence_form(self):
+        try:
+            code=self.grid.item(self.grid.selection())["values"][1]
+        except IndexError:
+            messagebox.showinfo(title="Alerta", message="Elija un registro, por favor")
+            return
+
+        data=self.__ProductsController.read_product(code)
+        self.form=CustomToplevel(self.app)
+        self.form.geometry("274x350")
+
+        title=CTkLabel(self.form, text="Añadir Existencia", bg_color=cp, width=274, height=35, font=("", 20))
+        title.pack()
+
+        validate_numerics=self.form.register(self.validate_len_and_numerics)
+
+        self.amount_entry=CTkEntry(self.form, placeholder_text='Existencia', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
+        self.amount_entry.pack()
+        self.amount_entry.insert(0, data[0][5])

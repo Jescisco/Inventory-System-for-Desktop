@@ -10,6 +10,7 @@ class MainView():
     def main(self):
 
         self.clean_window()
+        self.app.geometry("274x350")
 
         title=CTkLabel(self.app, text="Inventario", bg_color=cp, width=574, height=55, font=("", 40))
         title.pack()
@@ -27,7 +28,7 @@ class MainView():
         from Views.ProductsView import ProductsView
         self.clean_window()
         products_view=ProductsView(self.app)
-        products_view.products()
+        products_view.products(self.main)
 
     def sales_view(self):
         pass
