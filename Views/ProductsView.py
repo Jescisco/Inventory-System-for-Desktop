@@ -1,7 +1,7 @@
 from customtkinter import *
 from tkinter import ttk
 from Controllers.ProductsController import ProductsController
-from Resources.CustomWindow import CustomToplevel
+from Resources.Custom_window import CustomToplevel
 from Resources.Validations import Validations
 cp = '#0D55B4'
 cs= '#91C1FF'
