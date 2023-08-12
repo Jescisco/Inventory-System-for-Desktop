@@ -1,7 +1,9 @@
+from customtkinter import CTk
 from Views.MainView import MainView
-import customtkinter as ctk
 
-if __name__=="__main__":
-    app=ctk.CTk(title="San Pedro")
-    main=MainView(app)
+if __name__ == "__main__":
+    app = CTk()
+    app.geometry("274x350")
+    app.resizable(False, False)
+    MainView(app)
     app.mainloop()
