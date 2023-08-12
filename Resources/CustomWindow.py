@@ -1,6 +1,7 @@
 from customtkinter import *
 
 class CustomToplevel(CTkToplevel):
+
     def init(self, *args, **kwargs):
         super().init(*args, **kwargs)
 
