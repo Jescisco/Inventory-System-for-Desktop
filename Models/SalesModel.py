@@ -13,7 +13,7 @@ class SalesModel(GeneralModel):
     def register_sale(self, code:str, lot:int):
         product=self.__ProductsModel.read_product(code)
         if product!=[]:
-            if product[0][5]<=lot:
+            if lot<=product[0][5]:
                 final_price=product[0][4]*lot
                 resp=self.run_set_query(Q.get('register_sale'),(code,lot,final_price))
                 if type(resp)==int:

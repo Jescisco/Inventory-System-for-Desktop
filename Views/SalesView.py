@@ -31,7 +31,7 @@ class SalesView(CustomToplevel,Validations):
         delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50, command=self.delete_product)
         delete_button.pack(pady=10)
 
-        return_button=CTkButton(mini_container, text="Volver", width=150, height=50, command=main)
+        return_button=CTkButton(mini_container, text="Volver", width=150, height=50, command=self.register_sale)
         return_button.pack(pady=10)
 
         style=ttk.Style()
@@ -39,16 +39,20 @@ class SalesView(CustomToplevel,Validations):
         style.configure("Treeview.Heading", foreground="white",background=cs, relief="flat")
         style.map("Treeview.Heading", background=[('active',cs)])
 
-        self.grid = ttk.Treeview(self.app, columns=("#1","#2"), show="headings")
+        self.grid = ttk.Treeview(self.app, columns=("#1","#2","#3","#4"), show="headings")
         self.grid.place(x=255, y=80, width=700, height=450)
 
         self.grid.column("#0", width=0, anchor=CENTER)
         self.grid.column("#1",width=30, anchor=CENTER)
         self.grid.column("#2",width=45, anchor=CENTER)
+        self.grid.column("#3",width=45, anchor=CENTER)
+        self.grid.column("#4",width=45, anchor=CENTER)
 
         self.grid.heading("#0", text="id", anchor=CENTER)
         self.grid.heading("#1", text="Código", anchor=CENTER)
-        self.grid.heading("#2", text="Cantidad", anchor=CENTER)
+        self.grid.heading("#2", text="Nombre", anchor=CENTER)
+        self.grid.heading("#3", text="Precio", anchor=CENTER)
+        self.grid.heading("#4", text="Cantidad", anchor=CENTER)
 
     def add_product(self):
         code=self.search_entry.get()
@@ -56,7 +60,7 @@ class SalesView(CustomToplevel,Validations):
             product=self.__ProductsController.read_product(code)
             i=-1
             if product!=[]:
-                self.grid.insert('', i, text=product[0][0], values=(product[0][2],1))
+                self.grid.insert('', i, text=product[0][0], values=(product[0][2],product[0][1],product[0][4],1))
             else:
                 messagebox.showerror(title="Error",message="No existe ese producto")
         else:
@@ -70,3 +74,14 @@ class SalesView(CustomToplevel,Validations):
         except IndexError:
             messagebox.showinfo(title="Alerta", message="Elija un registro, por favor")
             return
+
+    def register_sale(self):
+        for item in self.grid.get_children():
+            valores=self.grid.item(item, "values")
+            status=self.__SalesController.register_sale(valores[0],valores[3])
+            print(status)
+            if status=="Success":
+                continue
+            else:
+                messagebox.showerror(title="Error",message="Ocurrió un error")
+                return
