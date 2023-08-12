@@ -4,7 +4,7 @@ class GeneralModel:
 
     def open_conn(self):
         try:
-            conn=mdb.connect(host="127.0.0.1",user="root",password="",database="inventario")
+            conn=mdb.connect(host="127.0.0.1",user="root",password="",database="inventory")
             return conn
         except mdb.Error as e:
             message=f"Ocurrió un error: {e}!"
