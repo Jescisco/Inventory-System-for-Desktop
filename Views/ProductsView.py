@@ -1,5 +1,5 @@
 from customtkinter import *
-from tkinter import ttk
+from tkinter import ttk,messagebox
 from Controllers.ProductsController import ProductsController
 from Resources.Custom_window import CustomToplevel
 from Resources.Validations import Validations
@@ -26,7 +26,7 @@ class ProductsView(CustomToplevel,Validations):
         edit_button=CTkButton(mini_container, text="Editar", width=150, height=50, command=self.edit_product_form)
         edit_button.pack()
 
-        delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50)
+        delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50, command=self.delete_product)
         delete_button.pack(pady=10)
 
         style=ttk.Style()
@@ -120,15 +120,15 @@ class ProductsView(CustomToplevel,Validations):
     def delete_product(self):
         id=self.grid.item(self.grid.selection())["text"]
         if id=="":
-            #Messagebox.show_warning("Elija un registro, por favor","Alerta")
+            messagebox.showwarning("Alerta","Elija un registro, por favor")
             return
-        if Messagebox.okcancel("Desea eliminar", "Alerta")=="OK":
+        if messagebox.askquestion("Alerta","Desea eliminar?")=="yes":
             status=self.__ProductsController.delete_product(id)
             if status=="Success":
-                Messagebox.ok("Eliminado Correctamente","Alerta")
+                messagebox.showinfo("Error","Eliminado Correctamente")
                 self.get_products()
             else:
-                Messagebox.show_error(status,"Alerta")
+                messagebox.show_error("Alerta",status)
                 return
         else:
             return
