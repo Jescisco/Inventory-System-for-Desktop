@@ -154,6 +154,7 @@ class ProductsView(CustomToplevel,Validations):
             self.get_products(data)
         else:
             self.get_products()
+        self.search_entry.delete(0, END)
 
     def products_form(self, title:str, function):
         self.form=CustomToplevel(self.app)

@@ -52,16 +52,20 @@ class SalesView(CustomToplevel,Validations):
 
     def add_product(self):
         code=self.search_entry.get()
-        product=self.__ProductsController.read_product(code)
-        i=-1
-        if product!=[]:
-            self.grid.insert('', i, text=product[0][0], values=(product[0][2],1))
+        if code!="":
+            product=self.__ProductsController.read_product(code)
+            i=-1
+            if product!=[]:
+                self.grid.insert('', i, text=product[0][0], values=(product[0][2],1))
+            else:
+                messagebox.showerror(title="Error",message="No existe ese producto")
         else:
-            messagebox.showerror(title="Error",message="No existe ese producto")
+            messagebox.showwarning(title="Alerta",message="Ingrese algún código, por favor")
+        self.search_entry.delete(0, END)
 
     def delete_product(self):
         try:
-            product=self.grid.get_children()
+            product=self.grid.selection()
             self.grid.delete(product)
         except IndexError:
             messagebox.showinfo(title="Alerta", message="Elija un registro, por favor")
