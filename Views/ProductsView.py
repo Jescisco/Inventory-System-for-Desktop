@@ -30,13 +30,16 @@ class ProductsView(CustomToplevel,Validations):
         delete_button.pack(pady=10)
 
         add_quantity_button=CTkButton(mini_container, text="Añadir Existencia", width=150, height=50, command=self.add_existence_form)
-        add_quantity_button.pack(pady=10)
+        add_quantity_button.pack()
 
+        CTkLabel(mini_container, text="").pack()
+
+        CTkLabel(mini_container, text="Buscar por codigo").pack()
         self.search_entry=CTkEntry(mini_container, width=150, height=30)
-        self.search_entry.pack(pady=10)
+        self.search_entry.pack()
 
         search_button=CTkButton(mini_container, text="Buscar", width=150, height=50, command=self.search_product)
-        search_button.pack(pady=10)
+        search_button.pack(pady=5)
 
         return_button=CTkButton(mini_container, text="Volver", width=150, height=50, command=main)
         return_button.pack(pady=10)
@@ -154,7 +157,7 @@ class ProductsView(CustomToplevel,Validations):
 
     def products_form(self, title:str, function):
         self.form=CustomToplevel(self.app)
-        self.form.geometry("274x350")
+        self.form.geometry("274x450")
 
         title=CTkLabel(self.form, text=f"{title} Producto", bg_color=cp, width=274, height=35, font=("", 20))
         title.pack()
@@ -162,24 +165,25 @@ class ProductsView(CustomToplevel,Validations):
         validate_alphanumerics=self.form.register(self.validate_len_and_alphanumerics)
         validate_numerics=self.form.register(self.validate_len_and_numerics)
 
-        self.name_entry=CTkEntry(self.form, placeholder_text='Nombre', width=140, height=40, validate="key", validatecommand=(validate_alphanumerics, '%P', 100), justify=CENTER)
-        self.name_entry.pack(pady=8)
+        CTkLabel(self.form, text="Nombre").pack()
+        self.name_entry=CTkEntry(self.form, width=140, height=40, validate="key", validatecommand=(validate_alphanumerics, '%P', 100), justify=CENTER)
+        self.name_entry.pack()
         self.name_entry.focus()
-
-        self.code_entry=CTkEntry(self.form, placeholder_text='Codigo', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 30), justify=CENTER)
-        self.code_entry.pack(pady=8)
-
-        self.p_p_entry=CTkEntry(self.form, placeholder_text='Precio de Compra', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
+        CTkLabel(self.form, text="Codigo de Barra").pack()
+        self.code_entry=CTkEntry(self.form, width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 30), justify=CENTER)
+        self.code_entry.pack()
+        CTkLabel(self.form, text="Precio compra").pack()
+        self.p_p_entry=CTkEntry(self.form, width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
         self.p_p_entry.pack()
-
-        self.s_p_entry=CTkEntry(self.form, placeholder_text='Precio de Venta', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
-        self.s_p_entry.pack(pady=8)
-
-        self.amount_entry=CTkEntry(self.form, placeholder_text='Existencia', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
+        CTkLabel(self.form, text="Precio Venta").pack()
+        self.s_p_entry=CTkEntry(self.form, width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
+        self.s_p_entry.pack()
+        CTkLabel(self.form, text="Existencia").pack()
+        self.amount_entry=CTkEntry(self.form, width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
         self.amount_entry.pack()
 
         submit=CTkButton(self.form, text='Enviar', width=140, height=40, command=function)
-        submit.pack(pady=10)
+        submit.pack(pady=15)
 
     def add_existence_form(self):
         try:
@@ -190,13 +194,16 @@ class ProductsView(CustomToplevel,Validations):
 
         data=self.__ProductsController.read_product(code)
         self.form=CustomToplevel(self.app)
-        self.form.geometry("274x350")
+        self.form.geometry("274x160")
 
         title=CTkLabel(self.form, text="Añadir Existencia", bg_color=cp, width=274, height=35, font=("", 20))
         title.pack()
 
         validate_numerics=self.form.register(self.validate_len_and_numerics)
 
-        self.amount_entry=CTkEntry(self.form, placeholder_text='Existencia', width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
-        self.amount_entry.pack()
+        self.amount_entry=CTkEntry(self.form, width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 10), justify=CENTER)
+        self.amount_entry.pack(pady=15)
         self.amount_entry.insert(0, data[0][5])
+
+        send_Button = CTkButton(self.form, width=140, height=40, text='Agregar')
+        send_Button.pack()
