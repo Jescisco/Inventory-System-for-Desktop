@@ -1,4 +1,4 @@
-from GeneralModel import GeneralModel
+from Models.GeneralModel import GeneralModel
 
 Q={
     "create_product":"INSERT INTO products(name,code,purchase_price,sale_price,existence) VALUES(?,?,?,?,?)",
@@ -59,6 +59,3 @@ class ProductsModel(GeneralModel):
 
     def search_products(self, search:str):
         return self.run_get_query(Q.get("search_products"),(search,))
-
-x=ProductsModel()
-print(x.search_products("mayo"))

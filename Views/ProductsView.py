@@ -1,5 +1,6 @@
 from customtkinter import *
 from tkinter import ttk
+from Controllers.ProductsController import ProductsController
 cp = '#0D55B4'
 cs= '#91C1FF'
 
@@ -7,6 +8,7 @@ class ProductsView():
 
     def __init__(self, app):
         self.app=app
+        self.__ProductsController=ProductsController()
         self.app.geometry("975x550")
 
     def products(self):
@@ -48,4 +50,19 @@ class ProductsView():
         self.grid.heading("#3", text="Precio Compra", anchor=CENTER)
         self.grid.heading("#4", text="Precio Venta", anchor=CENTER)
         self.grid.heading("#5", text="Existencia", anchor=CENTER)
+
+        self.get_products()
+
+    def get_products(self, data:list=[]):
+        records=self.grid.get_children()
+        for children in records:
+            self.grid.delete(children)
+        if data==[]:
+            data=self.__ProductsController.read_product()
+        i=0
+        for product in data:
+            self.grid.insert('', i, text=product[0], values=(product[1],product[2],product[3],product[4],product[5]))
+
+    def form(self):
+        pass
 
