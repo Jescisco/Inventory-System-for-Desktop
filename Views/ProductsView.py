@@ -4,8 +4,9 @@ cp = '#0D55B4'
 class ProductsView():
 
     def __init__(self, app):
-        self.app = app
+        self.app=app
         self.app.geometry("975x550")
+        self.products()
 
-    def products(self, container):
+    def products(self):
         pass

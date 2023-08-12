@@ -4,7 +4,12 @@ cp = '#0D55B4'
 class MainView():
 
     def __init__(self, app):
-        self.app = app
+        self.app=app
+        self.main()
+
+    def main(self):
+
+        self.clean_window()
 
         title=CTkLabel(self.app, text="Inventario", bg_color=cp, width=574, height=55, font=("", 40))
         title.pack()
@@ -20,10 +25,13 @@ class MainView():
 
     def products_view(self, container):
         from Views.ProductsView import ProductsView
-        self.clean_cont(container)
+        self.clean_window()
         products_view=ProductsView(self.app)
-        products_view.products(container)
+        products_view.products()
 
-    def clean_cont(self, container):
-        for widget in container.winfo_children():
+    def sales_view(self):
+        pass
+
+    def clean_window(self):
+        for widget in self.app.winfo_children():
             widget.destroy()
