@@ -76,18 +76,18 @@ class ProductsView(CustomToplevel,Validations):
         if self.validate_entrys(name,code,p_p,s_p,amount):
             status=self.__ProductsController.create_product(name,code,p_p,s_p,amount)
             if status=="Success":
-                messagebox.showinfo(message="Insertado con exito", title="sisas")
+                messagebox.showinfo(title="Ok", message="Insertado")
                 self.form.destroy()
                 self.get_products()
             else:
-                messagebox.showerror(message=status, title="Error")
+                messagebox.showerror(title="Error", message=status)
         else:
-            messagebox.showerror(message="Campos vacios", title="Error")
+            messagebox.showerror(title="Alerta", message="Campos vacíos")
 
     def edit_product_form(self):
         self.code=self.grid.item(self.grid.selection())["values"][1]
         if self.code=="":
-            messagebox.showinfo(message="Elija un registro, por favor", title="Alerta")
+            messagebox.showinfo(title="Alerta", message="Elija un registro, por favor")
             return
         data_update=self.__ProductsController.read_product(self.code)
         self.products_form("Actualizar", self.edit_product)
@@ -109,27 +109,26 @@ class ProductsView(CustomToplevel,Validations):
         if self.validate_entrys(name,code,p_p,s_p,amount,id):
             status=self.__ProductsController.update_product(id,name,code,p_p,s_p,amount)
             if status=="Success":
-                print("Actualizado")
+                messagebox.showinfo(title="Ok", message="Actualizado")
                 self.form.destroy()
                 self.get_products()
             else:
-                pass
+                messagebox.showerror(title="Error", message=status)
         else:
-            pass
+            messagebox.showwarning(title="Alerta", message="Campos vacíos")
 
     def delete_product(self):
         id=self.grid.item(self.grid.selection())["text"]
         if id=="":
-            #Messagebox.show_warning("Elija un registro, por favor","Alerta")
+            messagebox.showwarning(title="Alerta", message="Elija un registro, por favor")
             return
-        if messagebox.okcancel("Desea eliminar", "Alerta")=="yes":
+        if messagebox.askquestion(title="Alerta", message="Desea eliminar")=="yes":
             status=self.__ProductsController.delete_product(id)
             if status=="Success":
-                messagebox.showinfo("Error","Eliminado Correctamente")
+                messagebox.showinfo(title="Ok", message="Eliminado Correctamente")
                 self.get_products()
             else:
-                messagebox.show_error("Alerta",status)
-                return
+                messagebox.showerror(title="Error", message=status)
         else:
             return
 
