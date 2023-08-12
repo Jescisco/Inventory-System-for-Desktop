@@ -9,6 +9,7 @@ cs= '#91C1FF'
 class SaleView(CustomToplevel,Validations):
 
     def __init__(self, app):
+
         self.app=app
         self.__ProductsController=ProductsController()
         self.app.geometry("975x550")
