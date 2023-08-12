@@ -12,24 +12,22 @@ class ProductsView():
         self.app.geometry("975x550")
 
     def products(self):
-
-        # container = CTkFrame(self.app)
-        # container.pack()
-
         title=CTkLabel(self.app, text="Productos", bg_color=cp, width=974, height=55, font=("", 40))
         title.pack()
 
-        miniContainer = CTkFrame(self.app, width=20, height=50)
-        miniContainer.pack(side=LEFT, padx=20)
+        mini_container=CTkFrame(self.app, width=20, height=50)
+        mini_container.pack(side=LEFT, padx=20)
 
-        btnRegister = CTkButton(miniContainer, text="Registrar", width=150, height=50)
-        btnRegister.pack(pady=10)
-        btnEdit = CTkButton(miniContainer, text="Editar", width=150, height=50)
-        btnEdit.pack()
-        btnDelete = CTkButton(miniContainer, text="Eliminar", width=150, height=50)
-        btnDelete.pack(pady=10)
+        add_button=CTkButton(mini_container, text="Registrar", width=150, height=50, command=self.add_product_form)
+        add_button.pack(pady=10)
 
-        style = ttk.Style()
+        edit_button=CTkButton(mini_container, text="Editar", width=150, height=50)
+        edit_button.pack()
+
+        delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50)
+        delete_button.pack(pady=10)
+
+        style=ttk.Style()
         style.theme_use("clam")
         style.configure("Treeview.Heading", foreground="white",background=cs, relief="flat")
         style.map("Treeview.Heading", background=[('active',cs)])
@@ -63,6 +61,21 @@ class ProductsView():
         for product in data:
             self.grid.insert('', i, text=product[0], values=(product[1],product[2],product[3],product[4],product[5]))
 
-    def form(self):
+    def add_product_form(self):
+        self.form("Añadir", self.add_product)
+
+    def add_product(self):
+        pass
+
+    def edit_product_form(self):
+        pass
+
+    def edit_product(self):
+        pass
+
+    def delete_product(self):
+        pass
+
+    def form(self, title:str, function):
         pass
 
