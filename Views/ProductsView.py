@@ -1,5 +1,5 @@
 from customtkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from Controllers.ProductsController import ProductsController
 from Resources.Custom_window import CustomToplevel
 from Resources.Validations import Validations
@@ -76,18 +76,18 @@ class ProductsView(CustomToplevel,Validations):
         if self.validate_entrys(name,code,p_p,s_p,amount):
             status=self.__ProductsController.create_product(name,code,p_p,s_p,amount)
             if status=="Success":
-                print("Insertado")
+                messagebox.showinfo(message="Insertado con exito", title="sisas")
                 self.form.destroy()
                 self.get_products()
             else:
-                pass
+                messagebox.showerror(message=status, title="Error")
         else:
-            pass
+            messagebox.showerror(message="Campos vacios", title="Error")
 
     def edit_product_form(self):
         self.code=self.grid.item(self.grid.selection())["values"][1]
         if self.code=="":
-            #Messagebox.show_warning("Elija un registro, por favor","Alerta")
+            messagebox.showinfo(message="Elija un registro, por favor", title="Alerta")
             return
         data_update=self.__ProductsController.read_product(self.code)
         self.products_form("Actualizar", self.edit_product)
@@ -120,9 +120,9 @@ class ProductsView(CustomToplevel,Validations):
     def delete_product(self):
         id=self.grid.item(self.grid.selection())["text"]
         if id=="":
-            #Messagebox.show_warning("Elija un registro, por favor","Alerta")
+            messagebox.showwarning(message="Elija un registro, por favor", title="Alerta")
             return
-        if Messagebox.okcancel("Desea eliminar", "Alerta")=="OK":
+        if messagebox.okcancel("Desea eliminar", "Alerta")=="OK":
             status=self.__ProductsController.delete_product(id)
             if status=="Success":
                 Messagebox.ok("Eliminado Correctamente","Alerta")
