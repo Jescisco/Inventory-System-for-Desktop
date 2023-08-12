@@ -10,12 +10,12 @@ class MainView():
     def main(self):
 
         self.clean_window()
-        self.app.geometry("274x350")
+        self.app.geometry("274x420")
 
         title=CTkLabel(self.app, text="Inventario", bg_color=cp, width=574, height=55, font=("", 40))
         title.pack()
 
-        container=CTkFrame(self.app, bg_color='transparent', height=500, width=400)
+        container=CTkFrame(self.app, bg_color='transparent', height=420, width=274)
         container.pack(pady=70)
 
         products_button=CTkButton(container, text='Productos', height=50, width= 150, command=self.products_view)
@@ -23,6 +23,9 @@ class MainView():
 
         sales_button=CTkButton(container, text='Ventas', height=50, width= 150, command=self.sales_view)
         sales_button.pack(pady=10)
+
+        store_button=CTkButton(container, text='Almacen', height=50, width= 150)
+        store_button.pack(pady=10)
 
     def products_view(self):
         from Views.ProductsView import ProductsView
