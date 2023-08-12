@@ -205,5 +205,18 @@ class ProductsView(CustomToplevel,Validations):
         self.amount_entry.pack(pady=15)
         self.amount_entry.insert(0, data[0][5])
 
-        send_Button = CTkButton(self.form, width=140, height=40, text='Agregar')
+        send_Button = CTkButton(self.form, width=140, height=40, text='Agregar', command=lambda:self.add_existence(data[0][0],self.amount_entry.get()))
         send_Button.pack()
+
+    def add_existence(self, id:int, amount:int):
+        self.form.destroy()
+
+        if self.validate_entrys(id,amount):
+            status=self.__ProductsController.add_product_existence(id,amount)
+            if status=="Success":
+                messagebox.showinfo(title="Ok", message="Insertado")
+                self.get_products()
+            else:
+                messagebox.showerror(title="Error", message=status)
+        else:
+            messagebox.showwarning(title="Alerta", message="Campos vacíos")
