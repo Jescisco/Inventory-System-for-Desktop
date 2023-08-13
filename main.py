@@ -1,4 +1,4 @@
-from customtkinter import CTk
+from Resources.Includes.Modules import *
 from Views.MainView import MainView
 
 if __name__=="__main__":

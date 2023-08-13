@@ -1,11 +1,8 @@
-from customtkinter import *
-from tkinter import ttk,messagebox
+from Resources.Includes.Modules import *
+from Resources.Includes.Custom_window import CustomToplevel
+from Resources.Includes.Validations import Validations
 from Controllers.SalesController import SalesController
 from Controllers.ProductsController import ProductsController
-from Resources.Custom_window import CustomToplevel
-from Resources.Validations import Validations
-cp = '#0D55B4'
-cs= '#91C1FF'
 
 class SalesView(CustomToplevel,Validations):
 
@@ -31,7 +28,10 @@ class SalesView(CustomToplevel,Validations):
         delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50, command=self.delete_product)
         delete_button.pack(pady=10)
 
-        return_button=CTkButton(mini_container, text="Volver", width=150, height=50, command=self.register_sale)
+        register_sale_button=CTkButton(mini_container, text="Completar Venta", width=150, height=50, command=self.complete_invoice)
+        register_sale_button.pack(pady=10)
+
+        return_button=CTkButton(mini_container, text="Volver", width=150, height=50, command=main)
         return_button.pack(pady=10)
 
         style=ttk.Style()
@@ -58,11 +58,14 @@ class SalesView(CustomToplevel,Validations):
         code=self.search_entry.get()
         if code!="":
             product=self.__ProductsController.read_product(code)
-            i=-1
-            if product!=[]:
-                self.grid.insert('', i, text=product[0][0], values=(product[0][2],product[0][1],product[0][4],1))
+            if product[0][5]!=0:
+                i=-1
+                if product!=[]:
+                    self.grid.insert('', i, text=product[0][0], values=(product[0][2],product[0][1],product[0][4],1))
+                else:
+                    messagebox.showerror(title="Error",message="No existe ese producto")
             else:
-                messagebox.showerror(title="Error",message="No existe ese producto")
+                messagebox.showwarning(title="Alerta",message="No hay existencia de ese producto")
         else:
             messagebox.showwarning(title="Alerta",message="Ingrese algún código, por favor")
         self.search_entry.delete(0, END)
@@ -75,13 +78,47 @@ class SalesView(CustomToplevel,Validations):
             messagebox.showinfo(title="Alerta", message="Elija un registro, por favor")
             return
 
-    def register_sale(self):
+    def select_products(self):
+        products=[]
         for item in self.grid.get_children():
-            valores=self.grid.item(item, "values")
-            status=self.__SalesController.register_sale(valores[0],valores[3])
-            print(status)
+            products.append(self.grid.item(item, "values"))
+        return products
+
+    def complete_invoice(self):
+        total_price,products=0,self.select_products()
+        for product in products:
+            total_price+=int(product[2])
+
+        self.form=CustomToplevel(self.app)
+        self.form.geometry("274x450")
+
+        title=CTkLabel(self.form, text="Completar Factura", bg_color=cp, width=274, height=35, font=("", 20))
+        title.pack()
+
+        validate_numerics=self.form.register(self.validate_len_and_numerics)
+
+        CTkLabel(self.form, text="Total a Pagar").pack()
+        self.total_price_entry=CTkEntry(self.form, width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 100), justify=CENTER)
+        self.total_price_entry.pack()
+        self.total_price_entry.focus()
+        self.total_price_entry.insert(0, total_price)
+
+        submit=CTkButton(self.form, text='Enviar', width=140, height=40, command=self.guardar_ventas)
+        submit.pack(pady=15)
+
+    def guardar_ventas(self):
+        products=self.select_products()
+        for product in products:
+            status=self.__SalesController.register_sale(product[0],int(product[3]))
             if status=="Success":
                 continue
             else:
                 messagebox.showerror(title="Error",message="Ocurrió un error")
                 return
+        messagebox.showinfo(title="Ok",message="Venta Completada")
+        self.clean_treeview()
+        self.form.destroy()
+
+    def clean_treeview(self):
+        for children in self.grid.get_children():
+            self.grid.delete(children)
