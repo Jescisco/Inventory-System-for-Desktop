@@ -24,7 +24,7 @@ class MainView():
         sales_button=CTkButton(container, text='Ventas', height=50, width= 150, command=self.sales_view)
         sales_button.pack(pady=10)
 
-        store_button=CTkButton(container, text='Almacen', height=50, width= 150)
+        store_button=CTkButton(container, text='Almacen', height=50, width= 150, command=self.store_view)
         store_button.pack(pady=10)
 
     def products_view(self):
@@ -38,6 +38,12 @@ class MainView():
         self.clean_window()
         sales_view=SalesView(self.app)
         sales_view.sales(self.main)
+
+    def store_view(self):
+        from Views.StoreView import StoreView
+        self.clean_window()
+        store_view=StoreView(self.app)
+        store_view.store(self.main)
 
     def clean_window(self):
         for widget in self.app.winfo_children():

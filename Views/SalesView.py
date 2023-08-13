@@ -31,7 +31,10 @@ class SalesView(CustomToplevel,Validations):
         delete_button=CTkButton(mini_container, text="Eliminar", width=150, height=50, command=self.delete_product)
         delete_button.pack(pady=10)
 
-        return_button=CTkButton(mini_container, text="Volver", width=150, height=50, command=self.register_sale)
+        register_sale_button=CTkButton(mini_container, text="Completar Venta", width=150, height=50, command=self.complete_invoice)
+        register_sale_button.pack(pady=10)
+
+        return_button=CTkButton(mini_container, text="Volver", width=150, height=50, command=main)
         return_button.pack(pady=10)
 
         style=ttk.Style()
@@ -75,13 +78,47 @@ class SalesView(CustomToplevel,Validations):
             messagebox.showinfo(title="Alerta", message="Elija un registro, por favor")
             return
 
-    def register_sale(self):
+    def select_products(self):
+        products=[]
         for item in self.grid.get_children():
-            valores=self.grid.item(item, "values")
-            status=self.__SalesController.register_sale(valores[0],valores[3])
-            print(status)
+            products.append(self.grid.item(item, "values"))
+        return products
+
+    def complete_invoice(self):
+        total_price,products=0,self.select_products()
+        for product in products:
+            total_price+=int(product[2])
+
+        self.form=CustomToplevel(self.app)
+        self.form.geometry("274x450")
+
+        title=CTkLabel(self.form, text="Completar Factura", bg_color=cp, width=274, height=35, font=("", 20))
+        title.pack()
+
+        validate_numerics=self.form.register(self.validate_len_and_numerics)
+
+        CTkLabel(self.form, text="Total a Pagar").pack()
+        self.total_price_entry=CTkEntry(self.form, width=140, height=40, validate="key", validatecommand=(validate_numerics, '%P', 100), justify=CENTER)
+        self.total_price_entry.pack()
+        self.total_price_entry.focus()
+        self.total_price_entry.insert(0, total_price)
+
+        submit=CTkButton(self.form, text='Enviar', width=140, height=40, command=self.guardar_ventas)
+        submit.pack(pady=15)
+
+    def guardar_ventas(self):
+        products=self.select_products()
+        for product in products:
+            status=self.__SalesController.register_sale(product[0],int(product[3]))
             if status=="Success":
                 continue
             else:
                 messagebox.showerror(title="Error",message="Ocurrió un error")
                 return
+        self.clean_treeview()
+        self.form.destroy()
+
+    def clean_treeview(self):
+        childrens=self.grid.get_children()
+        for children in childrens:
+            self.grid.delete(children)

@@ -77,6 +77,7 @@ class ProductsView(CustomToplevel,Validations):
         i=0
         for product in data:
             self.grid.insert('', i, text=product[0], values=(product[1],product[2],product[3],product[4],product[5]))
+            i+=1
 
     def add_product_form(self):
         self.products_form("Añadir", self.add_product)
@@ -103,7 +104,7 @@ class ProductsView(CustomToplevel,Validations):
         try:
             code=self.grid.item(self.grid.selection())["values"][1]
         except IndexError:
-            messagebox.showinfo(title="Alerta", message="Elija un registro, por favor")
+            messagebox.showwarning(title="Alerta", message="Elija un registro, por favor")
             return
         data_update=self.__ProductsController.read_product(code)
         self.products_form("Actualizar", self.edit_product)
