@@ -61,11 +61,14 @@ class SalesView(CustomToplevel,Validations):
         code=self.search_entry.get()
         if code!="":
             product=self.__ProductsController.read_product(code)
-            i=-1
-            if product!=[]:
-                self.grid.insert('', i, text=product[0][0], values=(product[0][2],product[0][1],product[0][4],1))
+            if product[0][5]!=0:
+                i=-1
+                if product!=[]:
+                    self.grid.insert('', i, text=product[0][0], values=(product[0][2],product[0][1],product[0][4],1))
+                else:
+                    messagebox.showerror(title="Error",message="No existe ese producto")
             else:
-                messagebox.showerror(title="Error",message="No existe ese producto")
+                messagebox.showwarning(title="Alerta",message="No hay existencia de ese producto")
         else:
             messagebox.showwarning(title="Alerta",message="Ingrese algún código, por favor")
         self.search_entry.delete(0, END)
@@ -115,10 +118,10 @@ class SalesView(CustomToplevel,Validations):
             else:
                 messagebox.showerror(title="Error",message="Ocurrió un error")
                 return
+        messagebox.showinfo(title="Ok",message="Venta Completada")
         self.clean_treeview()
         self.form.destroy()
 
     def clean_treeview(self):
-        childrens=self.grid.get_children()
-        for children in childrens:
+        for children in self.grid.get_children():
             self.grid.delete(children)

@@ -8,6 +8,7 @@ Q={
     "update_product":"UPDATE products SET name=?,code=?,purchase_price=?,sale_price=?,existence=? WHERE id=?",
     "delete_product":"DELETE FROM products WHERE id=?",
     "add_product_existence":"UPDATE products SET existence=? WHERE id=?",
+    "substract_product_existence":"UPDATE products SET existence=existence-1 WHERE id=?",
     "search_products":"SELECT * FROM products WHERE name LIKE CONCAT('%',?,'%')"
 }
 
@@ -51,6 +52,14 @@ class ProductsModel(GeneralModel):
 
     def add_product_existence(self, id:int, existence:int):
         resp=self.run_set_query(Q.get('add_product_existence'),(existence,id))
+        if type(resp)==int:
+            status="Success" if (resp>0) else "No se insertó"
+        else:
+            status=resp
+        return status
+
+    def substract_product_existence(self, id:int):
+        resp=self.run_set_query(Q.get('substract_product_existence'),(id,))
         if type(resp)==int:
             status="Success" if (resp>0) else "No se insertó"
         else:

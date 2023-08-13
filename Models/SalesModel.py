@@ -19,14 +19,22 @@ class SalesModel(GeneralModel):
                 #Insertar Venta del Producto en el día
                 resp=self.run_set_query(Q.get("register_sale"),(code,lot,product[0][4]))
                 if type(resp)==int:
-                    status="Success" if (resp>0) else "No se insertó"
+                    if resp>0:
+                        resp=self.__ProductsModel.substract_product_existence(product[0][0])
+                        status="Success" if (resp=="Success") else "No se insertó"
+                    else:
+                        status="No se insertó"
                 else:
                     status=resp
             else:
                 #Actualizar Venta del Producto en el día
                 resp=self.run_set_query(Q.get("update_sale"),(lot,product[0][4],code))
                 if type(resp)==int:
-                    status="Success" if (resp>0) else "No se actualizó"
+                    if resp>0:
+                        resp=self.__ProductsModel.substract_product_existence(product[0][0])
+                        status="Success" if (resp=="Success") else "No se insertó"
+                    else:
+                        status="No se insertó"
                 else:
                     status=resp
         else:
