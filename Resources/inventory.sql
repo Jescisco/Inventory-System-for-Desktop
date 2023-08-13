@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-08-2023 a las 05:05:11
+-- Tiempo de generación: 13-08-2023 a las 19:55:36
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -41,7 +41,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `code`, `purchase_price`, `sale_price`, `existence`) VALUES
-(1, 'MAYONESA SAN JORGE SOBRE', '7702014781908', 1000, 1500, 20);
+(1, 'MAYONESA SAN JORGE SOBRE', '7702014781908', 1000, 1500, 20),
+(8, 'XD', '7702111515390', 10, 15, 6),
+(9, 'DORITO', '7702189050175', 1500, 2000, 10),
+(10, 'OREO AMERICANA', '7590011151615', 4000, 5000, 10),
+(11, 'BIANCHI CHOCOMANÍ X60GRS', '7702993038239', 1500, 2500, 5);
 
 -- --------------------------------------------------------
 
@@ -53,16 +57,17 @@ CREATE TABLE `sales` (
   `id` int(11) NOT NULL,
   `code` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `lot` int(11) NOT NULL,
-  `date` date NOT NULL DEFAULT current_timestamp()
+  `sale_price` int(11) NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `sales`
 --
 
-INSERT INTO `sales` (`id`, `code`, `lot`, `date`) VALUES
-(1, '7702014781908', 5, '0000-00-00'),
-(2, '7702014781908', 5, '2023-08-11');
+INSERT INTO `sales` (`id`, `code`, `lot`, `sale_price`, `date`) VALUES
+(11, '7590011151615', 4, 20000, '2023-08-13'),
+(12, '7702993038239', 1, 2500, '2023-08-13');
 
 --
 -- Índices para tablas volcadas
@@ -90,13 +95,13 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Restricciones para tablas volcadas
