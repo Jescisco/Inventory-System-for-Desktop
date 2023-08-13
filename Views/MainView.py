@@ -1,4 +1,4 @@
-from customtkinter import *
+from Resources.Includes.Modules import *
 cp = '#0D55B4'
 
 class MainView():

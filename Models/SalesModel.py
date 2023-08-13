@@ -1,11 +1,6 @@
 from Models.GeneralModel import GeneralModel
 from Models.ProductsModel import ProductsModel
-
-Q={
-    "register_sale":"INSERT INTO sales(code,lot,sale_price,date) VALUES (?,?,?,CURRENT_DATE())",
-    "verify_product":"SELECT * FROM sales WHERE code=? AND date=CURRENT_DATE()",
-    "update_sale":"UPDATE sales SET lot=lot+?,sale_price=sale_price+? WHERE code=? AND date=CURRENT_DATE()",
-}
+from Resources.Includes.Querys import SALES_QUERYS as Q
 
 class SalesModel(GeneralModel):
 

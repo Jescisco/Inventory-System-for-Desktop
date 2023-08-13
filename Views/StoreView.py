@@ -1,11 +1,7 @@
-from customtkinter import *
-from tkinter import ttk,messagebox
-from tkcalendar import DateEntry
+from Resources.Includes.Modules import *
+from Resources.Includes.Custom_window import CustomToplevel
+from Resources.Includes.Validations import Validations
 from Controllers.StoreController import StoreController
-from Resources.Custom_window import CustomToplevel
-from Resources.Validations import Validations
-cp = '#0D55B4'
-cs= '#91C1FF'
 
 class StoreView(CustomToplevel,Validations):
 

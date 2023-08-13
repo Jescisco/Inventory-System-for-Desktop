@@ -1,10 +1,7 @@
-from customtkinter import *
-from tkinter import ttk,messagebox
+from Resources.Includes.Modules import *
+from Resources.Includes.Custom_window import CustomToplevel
+from Resources.Includes.Validations import Validations
 from Controllers.ProductsController import ProductsController
-from Resources.Custom_window import CustomToplevel
-from Resources.Validations import Validations
-cp = '#0D55B4'
-cs= '#91C1FF'
 
 class ProductsView(CustomToplevel,Validations):
 
