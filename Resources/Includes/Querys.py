@@ -6,7 +6,7 @@ PRODUCTS_QUERYS={
     "update_product":"UPDATE products SET name=?,code=?,purchase_price=?,sale_price=?,existence=? WHERE id=?",
     "delete_product":"DELETE FROM products WHERE id=?",
     "add_product_existence":"UPDATE products SET existence=? WHERE id=?",
-    "substract_product_existence":"UPDATE products SET existence=existence-1 WHERE id=?",
+    "substract_product_existence":"UPDATE products SET existence=existence-? WHERE id=?",
     "search_products":"SELECT * FROM products WHERE name LIKE CONCAT('%',?,'%')"
 }
 

@@ -47,8 +47,8 @@ class ProductsModel(GeneralModel):
             status=resp
         return status
 
-    def substract_product_existence(self, id:int):
-        resp=self.run_set_query(Q.get('substract_product_existence'),(id,))
+    def substract_product_existence(self, id:int, lot:int):
+        resp=self.run_set_query(Q.get('substract_product_existence'),(lot,id))
         if type(resp)==int:
             status="Success" if (resp>0) else "No se insertó"
         else:
