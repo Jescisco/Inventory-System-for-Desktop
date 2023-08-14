@@ -1,6 +1,6 @@
 PRODUCTS_QUERYS={
     "create_product":"INSERT INTO products(name,code,purchase_price,sale_price,existence) VALUES(?,?,?,?,?)",
-    "read_product":"SELECT * FROM products WHERE code=?",
+    "read_product":"SELECT * FROM products WHERE code=? OR name LIKE CONCAT('%',?,'%')",
     "read_products":"SELECT * FROM products ORDER BY existence ASC",
     "read_update_product":"SELECT * FROM products WHERE id!=? AND code=?",
     "update_product":"UPDATE products SET name=?,code=?,purchase_price=?,sale_price=?,existence=? WHERE id=?",

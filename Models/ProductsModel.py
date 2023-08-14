@@ -16,7 +16,7 @@ class ProductsModel(GeneralModel):
 
     def read_product(self, code:str=""):
         if code!="":
-            return self.run_get_query(Q.get('read_product'),(code,))
+            return self.run_get_query(Q.get('read_product'),(code,code))
         else:
             return self.run_get_query(Q.get('read_products'))
 
