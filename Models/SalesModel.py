@@ -13,6 +13,7 @@ class SalesModel(GeneralModel):
             if self.run_get_query(Q.get("verify_product"),(code,))==[]:
                 #Insertar Venta del Producto en el día
                 resp=self.run_set_query(Q.get("register_sale"),(code,lot,price))
+                print(resp)
                 if type(resp)==int:
                     if resp>0:
                         resp=self.__ProductsModel.substract_product_existence(product[0][0],lot)
@@ -25,9 +26,11 @@ class SalesModel(GeneralModel):
             else:
                 #Actualizar Venta del Producto en el día
                 resp=self.run_set_query(Q.get("update_sale"),(lot,price,code))
+                print(resp)
                 if type(resp)==int:
                     if resp>0:
-                        resp=self.__ProductsModel.substract_product_existence(product[0][0],id)
+                        resp=self.__ProductsModel.substract_product_existence(product[0][0],lot)
+                        print(resp)
                         status="Success" if (resp=="Success") else "No se insertó"
                     else:
                         status="No se insertó"
